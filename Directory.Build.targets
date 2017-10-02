@@ -1,0 +1,42 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsTest) == 'true'">
+    <IsPackable>false</IsPackable>
+    <CopyGlobalFile>true</CopyGlobalFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsWebHost) == 'true'">
+    <OutputType>Exe</OutputType>
+    <CopyGlobalFile>true</CopyGlobalFile>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(IsTest) == 'true'">
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0-preview-20170810-02" />
+    <PackageReference Include="Moq" Version="4.7.99" />
+    <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta4-build3742" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="$(IsWebHost) == 'true'">
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <Target Name="CopyAppSettings" AfterTargets="AfterBuild" Condition="$(CopyGlobalFile) == 'true'">
+    <Copy SourceFiles="$(SolutionDir)ssl.pfx" DestinationFolder="$(OutputPath)" Condition="$(IsWebHost) == 'true'" ContinueOnError="true" SkipUnchangedFiles="false"/>
+    <Copy SourceFiles="$(SolutionDir)xunit.runner.json" DestinationFolder="$(OutputPath)" Condition="$(IsTest) == 'true'" ContinueOnError="true" SkipUnchangedFiles="false"/>
+    <Copy SourceFiles="$(SolutionDir)dist\CoWorker.MainSite\appsettings.json" DestinationFolder="$(OutputPath)"  ContinueOnError="true" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="$(SolutionDir)dist\CoWorker.MainSite\appsettings.Production.json" DestinationFolder="$(OutputPath)"  ContinueOnError="true" SkipUnchangedFiles="false"/>
+    <Copy SourceFiles="$(SolutionDir)dist\CoWorker.MainSite\appsettings.Staging.json" DestinationFolder="$(OutputPath)" ContinueOnError="true"  SkipUnchangedFiles="false"/>
+    <Copy SourceFiles="$(SolutionDir)dist\CoWorker.MainSite\appsettings.Development.json" DestinationFolder="$(OutputPath)"  ContinueOnError="true" SkipUnchangedFiles="false"/>
+  </Target>
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsTest>true</IsTest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.0" />
+    <ProjectReference Include="..\..\src\CoWorker.EntityFramework\CoWorker.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\models\CoWorker.Models.Blogs\CoWorker.Models.Blogs.csproj" />
+  </ItemGroup>
+</Project>
