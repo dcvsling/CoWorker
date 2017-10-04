@@ -41,7 +41,7 @@ namespace CoWorker.Builder
                         o.LoginPath = "/auth/login";
                         o.LogoutPath = "/auth/logout";
                         o.AccessDeniedPath = "/";
-                        o.ClaimsIssuer = "https://esoprtasia.tv";
+                        o.ClaimsIssuer = "https://CoWorker.idv";
                         o.ExpireTimeSpan = new TimeSpan(1, 0, 0);
                     });
         
