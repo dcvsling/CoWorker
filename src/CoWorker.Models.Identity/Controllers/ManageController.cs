@@ -13,7 +13,7 @@ namespace IdentitySamples.Controllers
 {
     [Controller]
     [Authorize]
-    public class ManageController
+    public class ManageController //DevSkim: ignore DS184626
     {
         public const string MANAGE = "Manage";
         private readonly UserManager<User> _userManager;
@@ -75,7 +75,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
-        
+
         public async Task<IActionResult> RemoveLogin(RemoveLogin account)
         {
             ManageMessageId? message = ManageMessageId.Error;
@@ -102,7 +102,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
-        
+
         public async Task<IActionResult> AddPhoneNumber(AddPhoneNumber model)
         {
             if (!_accessor.ActionContext.ModelState.IsValid)
@@ -119,7 +119,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/ResetAuthenticatorKey
         [HttpPost]
-        
+
         public async Task<IActionResult> ResetAuthenticatorKey()
         {
             var user = await GetCurrentUserAsync();
@@ -134,7 +134,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/GenerateRecoveryCode
         [HttpPost]
-        
+
         public async Task<IActionResult> GenerateRecoveryCode()
         {
             var user = await GetCurrentUserAsync();
@@ -150,7 +150,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
-        
+
         public async Task<IActionResult> EnableTwoFactorAuthentication()
         {
             var user = await GetCurrentUserAsync();
@@ -166,7 +166,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/DisableTwoFactorAuthentication
         [HttpPost]
-        
+
         public async Task<IActionResult> DisableTwoFactorAuthentication()
         {
             var user = await GetCurrentUserAsync();
@@ -192,7 +192,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
-        
+
         public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumber model)
         {
             if (!_accessor.ActionContext.ModelState.IsValid)
@@ -217,7 +217,7 @@ namespace IdentitySamples.Controllers
         //
         // GET: /Manage/RemovePhoneNumber
         [HttpPost]
-        
+
         public async Task<IActionResult> RemovePhoneNumber()
         {
             var user = await GetCurrentUserAsync();
@@ -244,7 +244,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
-        
+
         public async Task<IActionResult> ChangePassword(ChangePassword model)
         {
             if (!_accessor.ActionContext.ModelState.IsValid)
@@ -269,7 +269,7 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/SetPassword
         [HttpPost]
-        
+
         public async Task<IActionResult> SetPassword(SetPassword model)
         {
             if (!_accessor.ActionContext.ModelState.IsValid)
@@ -321,14 +321,14 @@ namespace IdentitySamples.Controllers
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
-        
+
         public IActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = _url.Action("LinkLoginCallback", "Manage");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(
-                provider, 
-                redirectUrl, 
+                provider,
+                redirectUrl,
                 _userManager.GetUserId(_accessor.ActionContext.HttpContext.User));
             return new ChallengeResult(provider,properties);
         }

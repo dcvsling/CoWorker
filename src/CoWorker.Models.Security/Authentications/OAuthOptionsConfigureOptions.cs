@@ -1,21 +1,25 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
-namespace CoWorker.Models.Security.OAuth
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.Extensions.Configuration;
+
+namespace CoWorker.Models.Security.OAuth.Twitch
 {
 
-    public class OAuthOptionsConfigureOptions : IConfigureNamedOptions<OAuthOptions>
+    public class OAuthOptionsConfigureOptions : IPostConfigureOptions<OAuthOptions>
     {
         private readonly IConfiguration _config;
 
         public OAuthOptionsConfigureOptions(IConfiguration config)
         {
-            this._config = config;
+            _config = config;
         }
-        public virtual void Configure(System.String name, OAuthOptions options)
-            => _config.GetSection(name).Bind(options);
-        public virtual void Configure(OAuthOptions options)
-            => Configure(string.Empty, options);
+        public void PostConfigure(string name, OAuthOptions options)
+        {
+            var section = _config.GetSection($"oauth:{name}");
+            if(!section.Exists()) return;
+            section.Bind(options);
+        }
     }
 }

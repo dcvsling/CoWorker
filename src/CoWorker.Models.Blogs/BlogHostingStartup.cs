@@ -21,7 +21,7 @@ namespace CoWorker.Models.Blogs
                 .AddSingleton(p => new DbContextPool<BlogDbContext>(p.GetService<DbContextOptions<BlogDbContext>>()))
                 .AddDbContextPool<BlogDbContext>(options =>
                     options.EnableSensitiveDataLogging(true).UseSqlServer(ctx.Configuration.GetConnectionString("esport-asia-db")));
-                srv.TryAddSingleton<ISystemClock,SystemClock>();
+                srv.TryAddSingleton<ISystemClock, SystemClock>();
             });
         }
     }

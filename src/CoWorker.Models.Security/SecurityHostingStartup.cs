@@ -1,6 +1,7 @@
 ﻿using CoWorker.Builder;
+using CoWorker.Models.Abstractions.Filters;
+using CoWorker.Models.Security.KeyVault;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CoWorker.Models.Security
 {
@@ -8,13 +9,12 @@ namespace CoWorker.Models.Security
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices(
-                (ctx, srv) => srv.AddCookieAuth()
-                        .AddGoogle()
-                        .AddFacebook()
-                        .AddTwitch()
-                    .Services
-                    .AddSingleton<IStartupFilter,SecurityStartupFilter>());
+            builder.ConfigureAppConfiguration(
+                    (ctx, b) => new KeyVaultConfigurationBuilder().Build(b))
+                .ConfigureServices(
+                    (ctx, srv) => srv.AddCookieAuth()
+                        .AddOAuthWithConfiguration(ctx)
+                    .AddAppPipe<SecurityApplicationFilter>());
         }
     }
 }

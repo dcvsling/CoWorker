@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CoWorker.Models.Core.ExceptionHandler;
+using Microsoft.AspNetCore.Builder;
 
 
 namespace CoWorker.Models.Core
@@ -8,30 +9,23 @@ namespace CoWorker.Models.Core
     using Microsoft.Extensions.Logging;
     using CoWorker.Builder;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.PlatformAbstractions;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.IO;
-    using CoWorker.Primitives;
+    using CoWorker.Models.Core.Https;
+    using CoWorker.Models.Abstractions.Filters;
 
     public class BootstrappingHostingStartup : IHostingStartup
     {
         void IHostingStartup.Configure(IWebHostBuilder builder)
         {
-            new HostingStartupProvider()
-                .HostingStartups
-                .Each(x => x.Configure(builder));
-
             builder.CaptureStartupErrors(true)
                 .ConfigureAppConfiguration(ConfigureAppConfiguration)
                 .ConfigureLogging(ConfigureLogging)
                 .ConfigureServices(ConfigureService)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("wwwroot")
-                //.RunIf(
-                //    () => builder.GetSetting(WebHostDefaults.EnvironmentKey) == "Development",
-                //    srv => srv.AddKestrelHttps())
-                .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
+                .UseIISIntegration()
                 .Configure(Helper.Empty<IApplicationBuilder>());
         }
 
@@ -39,31 +33,21 @@ namespace CoWorker.Models.Core
         {
             context.Configuration = builder
                 .AddEnvironmentVariables()
-                .AddInMemoryCollection(context.Configuration.AsEnumerable()).Build();
-            var config = context.Configuration.GetSection("keyvault");
-            context.Configuration = builder.AddAzureKeyVault(
-                        $"https://{config.GetValue<string>("name")}.vault.azure.net/",
-                        config.GetValue<string>("clientid"),
-                        config.GetValue<string>("clientsecret"))
+                .AddInMemoryCollection(context.Configuration.AsEnumerable())
                 .Build();
         }
 
         public void ConfigureLogging(WebHostBuilderContext context, ILoggingBuilder builder)
-            => builder.SetMinimumLevel(LogLevel.Trace)
-                .AddConfiguration(context.Configuration)
-                .AddAzureWebAppDiagnostics();
+            => builder.AddAzureWebAppDiagnostics();
 
         public void ConfigureService(WebHostBuilderContext context, IServiceCollection services)
         {
             services.AddOptions()
-                    .AddElm()
-                    .AddHttpsRedirect()
+                    .AddHttps()
+                    .AddExceptionHandler()
                     .AddAntiforgeryMiddleware()
-                    .AddSingleton<IStartupFilter, StartupFilterBase>()
+                    .AddAppPipe<CoreApplicationFilter>()
                     .AddSingleton(services);
-
-            if (context.HostingEnvironment.IsDevelopment())
-                services.AddKestrelHttps();
 
             Helper.InitDefaultJsonSetting();
         }

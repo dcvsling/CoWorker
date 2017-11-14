@@ -22,8 +22,10 @@ namespace CoWorker.Models.Core.Antiforgery
         private IEqualityComparer<string> equaltyComparer
             => EqualityComparer<string>.Create(
                 obj => obj.GetHashCode(),
-                (x, y) => x.ToLower().Equals(y.ToLower(),
-                    StringComparison.OrdinalIgnoreCase));
+                (x, y) => x.ToLower().Equals(
+                    y.ToLower(),
+                    StringComparison.OrdinalIgnoreCase)
+                );
 
         public AntiforgeryMiddleware(
             IHostingEnvironment env,
@@ -40,16 +42,13 @@ namespace CoWorker.Models.Core.Antiforgery
         async public Task Invoke(HttpContext context)
         {
             var isValid = ShouldValidate(context) ? ValidToken : Helper.Default<HttpContext,Task>(Task.CompletedTask);
-            var isGenerateOrValid = ShouldGenerate(context) ? GenerateToken : isValid;
-            await isGenerateOrValid(context);
+            await (ShouldGenerate(context) ? GenerateToken : isValid)(context);
         }
         public RequestDelegate Middleware(RequestDelegate next)
             => async ctx =>
             {
-
                 await Invoke(ctx);
                 await (ctx.Response.StatusCode == 400 ? Task.CompletedTask : next(ctx));
-                //await next(ctx);
             };
 
         private bool ShouldGenerate(HttpContext context)

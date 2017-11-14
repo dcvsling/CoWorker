@@ -30,9 +30,9 @@
         /// <param name="options">The <see cref="AntiforgeryOptions"/></param>
         public void Configure(AntiforgeryOptions options)
         {
-            options.Cookie.Name = COOKIE_NAME;
             options.FormFieldName = NON_COOKIE_NAME;
             options.HeaderName = NON_COOKIE_NAME;
+            options.Cookie.Name = COOKIE_NAME;
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.Path = COOKIE_PATH;

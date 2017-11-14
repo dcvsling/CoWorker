@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -42,8 +43,9 @@ namespace CoWorker.Primitives
                     yield return i;
                 i++;
             }
-            yield break;
         }
 
+        public static string ToJson(this object obj, JsonSerializerSettings settings = default)
+            => JsonConvert.SerializeObject(obj, settings ?? JsonConvert.DefaultSettings());
     }
 }

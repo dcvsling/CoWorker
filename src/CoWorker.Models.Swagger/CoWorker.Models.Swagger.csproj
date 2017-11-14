@@ -10,6 +10,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoWorker.Models.Abstractions\CoWorker.Models.Abstractions.csproj" />
     <ProjectReference Include="..\CoWorker.Primitives\CoWorker.Primitives.csproj" />
   </ItemGroup>
 

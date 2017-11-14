@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.ApplicationInsights.HostingStartup;
+﻿using CoWorker.Models.Security;
+using CoWorker.Models.Swagger;
+using Microsoft.AspNetCore.ApplicationInsights.HostingStartup;
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using CoWorker.Models.Core;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.Threading.Tasks;
+using CoWorker.Models.Blogs;
 
-[assembly: HostingStartup(typeof(ApplicationInsightsHostingStartup))]
 [assembly: HostingStartup(typeof(BootstrappingHostingStartup))]
+[assembly: HostingStartup(typeof(SecurityHostingStartup))]
+[assembly: HostingStartup(typeof(SwaggerHostingStartup))]
+[assembly: HostingStartup(typeof(BlogHostingStartup))]
 
 namespace CoWorker.MainSite
 {

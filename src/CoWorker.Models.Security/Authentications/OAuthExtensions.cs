@@ -11,6 +11,7 @@ namespace CoWorker.Builder
 {
     using CoWorker.Models.Security.OAuth;
     using CoWorker.Primitives;
+    using Microsoft.AspNetCore.Hosting;
 
     public static class OAuthBuilderExtensions
     {
@@ -28,11 +29,12 @@ namespace CoWorker.Builder
             name = name ?? typeof(TOptions).RemovePostfixName();
             return  services.AddRemoteScheme<TOptions, THandler>(name, name, config ?? Helper.Empty<TOptions>());
         }
-
-        public static AuthenticationBuilder AddTwitch(this AuthenticationBuilder builder)
-            => builder.AddOAuth<TwitchOptions, TwitchHandler>(TwitchOptions.AuthenticationScheme);
-
         //public static IServiceCollection AddAuth(this IServiceCollection services, params ConfigureDelegate<AuthenticationBuilder>[] oauths)
         //    => oauths.Aggregate(services.AddAuthentication(), (seed, next) => next(seed)).Services;
+
+
+        public static IServiceCollection AddOAuthWithConfiguration(this AuthenticationBuilder builder, WebHostBuilderContext context)
+            => new OAuthBuilder(builder, context).Build();
+
     }
 }

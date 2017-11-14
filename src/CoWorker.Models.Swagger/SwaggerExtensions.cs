@@ -11,7 +11,6 @@ namespace CoWorker.LightMvc.Swagger
                 .AddSwaggerGen(o =>
                 {
                     o.SwaggerDoc("v1", new Info { Title = "My API V1", Version = "v1" });
-                    o.SwaggerDoc("v2", new Info { Title = "My API V2", Version = "v2" });
                     o.OperationFilter<SecurityRequirementsOperationFilter>();
                     o.DescribeAllParametersInCamelCase();
                 });

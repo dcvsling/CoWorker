@@ -16,7 +16,7 @@ namespace CoWorker.Models.Blog
             related.StartDate = state.StartDate;
             return related;
         }
-        public static PostState SetPost(this PostState state,Post post)
+        public static PostState SetPost(this PostState state, Post post)
         {
             state.Content = post.Content;
             state.Description = post.Description;

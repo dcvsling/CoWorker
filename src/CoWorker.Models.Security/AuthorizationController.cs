@@ -42,8 +42,8 @@ namespace CoWorker.Models.Security.Authentication
                     .Select(x =>
                     new AuthenticationScheme()
                     {
-                        Url = $"{_accessor.HttpContext.Request.Path.ToString()}/{x.DisplayName}",
-                        Image = $"{_accessor.HttpContext.Request.Path.ToString()}/{x.DisplayName}".Replace("auth", "rsc"),
+                        Url = $"{_accessor.HttpContext.Request.Path.ToString()}{x.DisplayName}",
+                        Image = $"{_accessor.HttpContext.Request.Path.ToString()}{x.DisplayName}".Replace("auth", "rsc"),
                         DisplayName = x.DisplayName,
                         Scheme = x.Name
                     }));

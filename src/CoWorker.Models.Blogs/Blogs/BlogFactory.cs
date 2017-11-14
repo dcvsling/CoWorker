@@ -39,7 +39,7 @@ namespace CoWorker.Models.Blog
 
         async private Task<IEnumerable<T>> Query<T>(Func<BlogDbContext,Task<IEnumerable<T>>> func)
         {
-            using(var context = _context.Rent())
+            using (var context = _context.Rent())
             {
                 return await func(context);
             }
