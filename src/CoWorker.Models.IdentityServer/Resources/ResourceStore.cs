@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CoWorker.Primitives;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using IdentityServer4.Stores;
@@ -7,15 +8,15 @@ using IdentityServer4.Models;
 using System.Threading.Tasks;
 namespace CoWorker.Models.IdentityServer.Resources
 {
-    using Resources = IdentityServer4.Models.Resources;
+
     public class ResourceStore : IResourceStore
     {
-        private readonly Resources _resources;
+        private readonly AppResources _resources;
+        private readonly IOptionsSnapshot<AppResources> _snapshot;
 
-        public ResourceStore(IConfigureOptions<Resources> config)
+        public ResourceStore(IOptionsSnapshot<AppResources> snapshot)
         {
-            _resources = new Resources();
-            config.Configure(_resources);
+            _snapshot = snapshot;
         }
         public Task<ApiResource> FindApiResourceAsync(string name)
             => Task.FromResult(_resources.ApiResources.FirstOrDefault(x => x.Name == name));
@@ -26,7 +27,7 @@ namespace CoWorker.Models.IdentityServer.Resources
         public Task<IEnumerable<IdentityResource>> FindIdentityResourcesByScopeAsync(IEnumerable<string> scopeNames)
             => Task.FromResult(_resources.IdentityResources.AsEnumerable());
 
-        public Task<Resources> GetAllResourcesAsync()
-            => Task.FromResult(_resources);
+        public Task<IdentityServer4.Models.Resources> GetAllResourcesAsync()
+            => Task.FromResult(_resources.As<IdentityServer4.Models.Resources>());
     }
 }

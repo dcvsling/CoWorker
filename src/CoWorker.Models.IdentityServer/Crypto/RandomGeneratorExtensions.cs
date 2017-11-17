@@ -13,22 +13,20 @@ using System.Linq.Expressions;
 
 namespace CoWorker.Models.IdentityServer.Crypto
 {
-    public class RSAKeyStore
+
+    public static class RandomGeneratorExtensions
     {
-        private readonly IConfiguration _config;
+        private const string AllowableCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
 
-        public RSAKeyStore(IConfiguration config)
+        public static T GenerateString<T>(this Func<string,T> action,int length)
         {
-            _config = config;
+            using(var random = RandomNumberGenerator.Create(AllowableCharacters))
+            {
+                var bytes = new byte[length];
+                random.GetBytes(bytes);
+                return action(new string(bytes.Select(x => AllowableCharacters[x % AllowableCharacters.Length]).ToArray()));
+            }
         }
-
-        public RsaSecurityKey Create()
-        {
-
-            var rsa = new RSACryptoServiceProvider();
-            rsa.ImportCspBlob(Convert.FromBase64String(_config["SigningCredential"]));
-            return new RsaSecurityKey(rsa);
-        }
-
     }
+
 }

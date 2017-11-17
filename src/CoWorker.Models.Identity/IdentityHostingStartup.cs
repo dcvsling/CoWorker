@@ -20,7 +20,7 @@ namespace CoWorker.Models.Identity
                 (ctx, srv) => srv
                     .AddIdentityCore<User>(Helper.Empty<IdentityOptions>())
                         .AddEntityFrameworkStores<UserDbContext>()
-                        .AddUserStore<UserOnlyStore<User,UserDbContext,Guid>>()
+                        .AddUserStore<UserOnlyStore<User, UserDbContext, Guid>>()
                         .AddDefaultTokenProviders()
                         .Services
                     .AddScoped<AccountController>()

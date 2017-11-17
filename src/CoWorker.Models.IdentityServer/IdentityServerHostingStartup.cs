@@ -1,4 +1,5 @@
-﻿using CoWorker.Models.Abstractions.Filters;
+﻿
+using CoWorker.Models.Abstractions.Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,7 @@ namespace CoWorker.Models.IdentityServer
         }
 
         private void ConfigureServices(IServiceCollection services)
-            => services.AddIdentityService()
+            => services.AddIdentityServer().Services
                 .AddAppPipe<IdentityServerApplicationFilter>();
     }
 }
