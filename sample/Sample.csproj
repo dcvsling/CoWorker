@@ -4,21 +4,27 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <ApplicationInsightsResourceId>/subscriptions/5bf9b7d5-c9a8-4c0c-b56e-818f849aaf76/resourcegroups/coworker/providers/microsoft.insights/components/application-insights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/5bf9b7d5-c9a8-4c0c-b56e-818f849aaf76/resourcegroups/coworker/providers/microsoft.insights/components/application-insights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="System.Composition" Version="1.1.0" />
     <PackageReference Include="System.Composition.Convention" Version="1.1.0" />
-
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\src\CoWorker.Models.Abstractions\CoWorker.Models.Abstractions.csproj" />
     <ProjectReference Include="..\src\CoWorker.Models.Blogs\CoWorker.Models.Blogs.csproj" />
     <ProjectReference Include="..\src\CoWorker.Models.Core\CoWorker.Models.Core.csproj" />
+    <ProjectReference Include="..\src\CoWorker.Models.IdentityServer\CoWorker.Models.IdentityServer.csproj" />
     <ProjectReference Include="..\src\CoWorker.Models.Identity\CoWorker.Models.Identity.csproj" />
+    <ProjectReference Include="..\src\CoWorker.Models.Mvc\CoWorker.Models.Mvc.csproj" />
     <ProjectReference Include="..\src\CoWorker.Models.Security\CoWorker.Models.Security.csproj" />
+    <ProjectReference Include="..\src\CoWorker.Models.SignalR\CoWorker.Models.SignalR.csproj" />
     <ProjectReference Include="..\src\CoWorker.Models.Swagger\CoWorker.Models.Swagger.csproj" />
     <ProjectReference Include="..\src\CoWorker.Primitives\CoWorker.Primitives.csproj" />
   </ItemGroup>
@@ -35,5 +41,8 @@
     <Content Update="appsettings.staging.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>

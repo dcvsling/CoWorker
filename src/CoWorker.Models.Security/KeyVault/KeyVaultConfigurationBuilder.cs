@@ -20,6 +20,8 @@ namespace CoWorker.Models.Security.KeyVault
                 String.Format(AZURE_KEYVAULT_URL, config.GetValue<string>("name")),
                 config.GetValue<string>("clientid"),
                 config.GetValue<string>("clientsecret"));
+
+
     }
 
 

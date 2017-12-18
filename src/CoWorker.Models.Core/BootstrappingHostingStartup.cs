@@ -1,6 +1,7 @@
-﻿using CoWorker.Models.Core.ExceptionHandler;
+﻿using Microsoft.AspNetCore.Hosting;
+using CoWorker.Models.Core.ExceptionHandler;
 using Microsoft.AspNetCore.Builder;
-
+[assembly: HostingStartup(typeof(CoWorker.Models.Core.BootstrappingHostingStartup))]
 
 namespace CoWorker.Models.Core
 {
@@ -13,12 +14,12 @@ namespace CoWorker.Models.Core
     using System;
     using System.IO;
     using CoWorker.Models.Core.Https;
-    using CoWorker.Models.Abstractions.Filters;
 
     public class BootstrappingHostingStartup : IHostingStartup
     {
         void IHostingStartup.Configure(IWebHostBuilder builder)
         {
+
             builder.CaptureStartupErrors(true)
                 .ConfigureAppConfiguration(ConfigureAppConfiguration)
                 .ConfigureLogging(ConfigureLogging)
@@ -43,6 +44,8 @@ namespace CoWorker.Models.Core
         public void ConfigureService(WebHostBuilderContext context, IServiceCollection services)
         {
             services.AddOptions()
+                    .AddStores()
+                    .AddApplicationFilter()
                     .AddHttps()
                     .AddExceptionHandler()
                     .AddAntiforgeryMiddleware()

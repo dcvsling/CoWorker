@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
@@ -16,12 +17,12 @@ namespace CoWorker.Models.Core.Cors
         public static IServiceCollection AddCorsWithConfiguration(this IServiceCollection services)
         {
             services.AddCors()
-                .AddScoped<IPostConfigureOptions<CorsOptions>, CorsConfigureOptions>();
+                .AddSingleton<IConfigureOptions<CorsOptions>, CorsConfigureOptions>();
 
             return services;
         }
 
         public static IApplicationBuilder UseCors(this IApplicationBuilder app)
-            => app.UseCors(app.ApplicationServices.GetService<CorsOptions>().DefaultPolicyName);
+            => app.UseCors(app.ApplicationServices.GetService<IOptionsMonitor<CorsOptions>>().Get(app.ApplicationServices.GetService<IHostingEnvironment>().EnvironmentName).DefaultPolicyName);
     }
 }

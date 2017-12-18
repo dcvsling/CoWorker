@@ -12,7 +12,7 @@ using CoWorker.Primitives;
 namespace CoWorker.Models.Core.Cors
 {
 
-    public class CorsConfigureOptions : IPostConfigureOptions<CorsOptions>
+    public class CorsConfigureOptions : IConfigureNamedOptions<CorsOptions>
     {
         private readonly IConfiguration _config;
         private readonly IOptionsSnapshot<CorsPolicyOptions> _snapshot;
@@ -22,7 +22,7 @@ namespace CoWorker.Models.Core.Cors
             _config = config;
             _snapshot = snapshot;
         }
-        public void PostConfigure(string name, CorsOptions options)
+        public void Configure(string name, CorsOptions options)
         {
             _config.GetSection("cors")
                 .GetChildren()
@@ -39,5 +39,8 @@ namespace CoWorker.Models.Core.Cors
                         .SetPreflightMaxAge(new TimeSpan(x.MaxAge))
                         .SetIsOriginAllowedToAllowWildcardSubdomains()));
         }
+
+        public void Configure(CorsOptions options)
+            => Configure(string.Empty, options);
     }
 }

@@ -34,6 +34,7 @@ namespace CoWorker.Models.Security.Authentication
             this._accessor = accessor;
             this._options = options.Value;
         }
+
         [HttpGet]
         public Task<IEnumerable<AuthenticationScheme>> Get()
             => Task.Run(schemas.GetAllSchemesAsync)

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Internal;
-
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Hosting;
+
+[assembly: HostingStartup(typeof(CoWorker.Models.Blogs.BlogHostingStartup))]
 
 namespace CoWorker.Models.Blogs
 {
@@ -20,7 +21,7 @@ namespace CoWorker.Models.Blogs
                 srv.AddBlog()
                 .AddSingleton(p => new DbContextPool<BlogDbContext>(p.GetService<DbContextOptions<BlogDbContext>>()))
                 .AddDbContextPool<BlogDbContext>(options =>
-                    options.EnableSensitiveDataLogging(true).UseSqlServer(ctx.Configuration.GetConnectionString("esport-asia-db")));
+                    options.EnableSensitiveDataLogging(true).UseSqlServer(ctx.Configuration.GetConnectionString("coworker-db")));
                 srv.TryAddSingleton<ISystemClock, SystemClock>();
             });
         }

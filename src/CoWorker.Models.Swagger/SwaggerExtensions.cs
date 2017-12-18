@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -11,6 +12,7 @@ namespace CoWorker.LightMvc.Swagger
                 .AddSwaggerGen(o =>
                 {
                     o.SwaggerDoc("v1", new Info { Title = "My API V1", Version = "v1" });
+                    o.SwaggerDoc("v3", new Info { Title = "My API V3", Version = "v3" });
                     o.OperationFilter<SecurityRequirementsOperationFilter>();
                     o.DescribeAllParametersInCamelCase();
                 });

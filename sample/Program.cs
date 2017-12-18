@@ -1,18 +1,9 @@
-﻿using CoWorker.Models.Security;
-using CoWorker.Models.Swagger;
-using Microsoft.AspNetCore.ApplicationInsights.HostingStartup;
+﻿using CoWorker.Builder;
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
-using CoWorker.Models.Core;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.Threading.Tasks;
-using CoWorker.Models.Blogs;
-
-[assembly: HostingStartup(typeof(BootstrappingHostingStartup))]
-[assembly: HostingStartup(typeof(SecurityHostingStartup))]
-[assembly: HostingStartup(typeof(SwaggerHostingStartup))]
-[assembly: HostingStartup(typeof(BlogHostingStartup))]
 
 namespace CoWorker.MainSite
 {
@@ -26,8 +17,9 @@ namespace CoWorker.MainSite
 
         public static IWebHost BuildWebHost(string[] args)
             => WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
+                .AddAllStartup()
                 .UseSetting(WebHostDefaults.ApplicationKey, PlatformServices.Default.Application.ApplicationName)
                 .Build();
-
     }
 }

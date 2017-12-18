@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CoWorker.Models.Identity.Repository;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
-using IdentitySamples.Controllers;
-using IdentitySample.Controllers;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+
+[assembly: HostingStartup(typeof(CoWorker.Models.Identity.IdentityHostingStartup))]
 
 namespace CoWorker.Models.Identity
 {
@@ -15,18 +14,14 @@ namespace CoWorker.Models.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-
             builder.ConfigureServices(
                 (ctx, srv) => srv
+                    .AddSingleton<IApplicationPartTypeProvider,ControllerModelMetadata>()
                     .AddIdentityCore<User>(Helper.Empty<IdentityOptions>())
-                        .AddEntityFrameworkStores<UserDbContext>()
                         .AddUserStore<UserOnlyStore<User,UserDbContext,Guid>>()
                         .AddDefaultTokenProviders()
                         .Services
-                    .AddScoped<AccountController>()
-                    .AddScoped<ManageController>()
-                    .AddSingleton(p => new DbContextPool<UserDbContext>(p.GetService<DbContextOptions<UserDbContext>>()))
-                    .AddDbContextPool<UserDbContext>(options => options.UseSqlServer(ctx.Configuration.GetConnectionString(nameof(UserDbContext)))));
+                    .AddRepositoryDefinition<UserDbContext>(typeof(UserRepository<>)));
         }
     }
 }
